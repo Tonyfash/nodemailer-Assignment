@@ -8,6 +8,7 @@ const cors = require('cors');
 const DB_URI = process.env.DB_URI;
 const userRouter = require('./routes/userRoute');
 const productRouter = require('./routes/productRoute');
+const jwt = require('jsonwebtoken');
 
 app.use(express.json());
 app.use('/api/v1', userRouter)

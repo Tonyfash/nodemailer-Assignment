@@ -68,7 +68,7 @@ exports.update = async (req, res) => {
         if (!products) {
             return res.status(404).json('Product not found')
         };
-        
+
         if (files && files.length > 0) {
             for (const product of products.productImages) {
                 await cloudinary.uploader.destroy(product.publicId)
@@ -99,4 +99,24 @@ exports.update = async (req, res) => {
             error: error.message
         })   
     }
+};
+
+exports.deleteProduct = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const product = await productModel.findById(id);
+        if(!product){
+            return res.status(404).json({message: 'Product not found'});
+        }
+        await productModel.findByIdAndDelete(id);
+        res.status(200).json({
+            message: 'Product deleted successfully'
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: 'Internal Server Error',
+            error: error.message
+        });
+    }
 }
+
